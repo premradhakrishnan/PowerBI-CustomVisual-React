@@ -1,1 +1,25 @@
-{"visual":{"name":"pBICustomVisualUsingReact","displayName":"PBICustomVisualUsingReact","guid":"pBICustomVisualUsingReact8B70EF66D46348C993C08B4CC6255579","visualClassName":"Visual","version":"1.0.0","description":"","supportUrl":"","gitHubUrl":""},"apiVersion":"2.6.0","author":{"name":"","email":""},"assets":{"icon":"assets/icon.png"},"externalJS":null,"style":"style/visual.less","capabilities":"capabilities.json","dependencies":null,"stringResources":[]}
+{
+    "visual": {
+        "name": "pBICustomVisualUsingReact",
+        "displayName": "PBICustomVisualUsingReact",
+        "guid": "pBICustomVisualUsingReact8B70EF66D46348C993C08B4CC6255579",
+        "visualClassName": "Visual",
+        "version": "1.0.0",
+        "description": "Power BI Custom Visual Demo using React",
+        "supportUrl": "https://www.ssw.com.au",
+        "gitHubUrl": "https://github.com/premradhakrishnan/PowerBI-CustomVisual-React"
+    },
+    "apiVersion": "2.6.0",
+    "author": {
+        "name": "Prem Radhakrishnan [SSW]",
+        "email": "premradhakrishnan@ssw.com.au"
+    },
+    "assets": {
+        "icon": "assets/icon.png"
+    },
+    "externalJS": null,
+    "style": "style/visual.less",
+    "capabilities": "capabilities.json",
+    "dependencies": null,
+    "stringResources": []
+}
