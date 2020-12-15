@@ -27,26 +27,39 @@
 
 import "core-js/stable";
 import "./../style/visual.less";
+
 import powerbi from "powerbi-visuals-api";
+
+//base imports for constructor, update method and IVisual base class
 import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructorOptions;
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
+
+//Visual Formatting classes, objects and imports
+import { VisualSettings } from "./settings";
 import EnumerateVisualObjectInstancesOptions = powerbi.EnumerateVisualObjectInstancesOptions;
 import VisualObjectInstance = powerbi.VisualObjectInstance;
-import DataView = powerbi.DataView;
 import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnumerationObject;
 
-import { VisualSettings } from "./settings";
+//Data Model
+import DataView = powerbi.DataView;
+
+//All visuals start with a class that implements the IVisual interface. 
+//You can name the class anything as long as there's exactly one class that implements the IVisual interface.
+//The visual class name must match what's defined in the pbiviz.json file.
 export class Visual implements IVisual {
     private target: HTMLElement;
     private updateCount: number;
     private settings: VisualSettings;
     private textNode: Text;
 
+    //a standard constructor to initialize the visual's state
     constructor(options: VisualConstructorOptions) {
         console.log('Visual constructor', options);
+
         this.target = options.element;
         this.updateCount = 0;
+        
         if (document) {
             const new_p: HTMLElement = document.createElement("p");
             new_p.appendChild(document.createTextNode("Update count:"));
@@ -58,7 +71,9 @@ export class Visual implements IVisual {
         }
     }
 
+    //to update the visual's data
     public update(options: VisualUpdateOptions) {
+        
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
         console.log('Visual update', options);
         if (this.textNode) {
@@ -66,16 +81,15 @@ export class Visual implements IVisual {
         }
     }
 
+    //private function not required for demo
     private static parseSettings(dataView: DataView): VisualSettings {
         return <VisualSettings>VisualSettings.parse(dataView);
     }
 
-    /**
-     * This function gets called for each of the objects defined in the capabilities files and allows you to select which of the
-     * objects and properties you want to expose to the users in the property pane.
-     *
-     */
-    public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): VisualObjectInstance[] | VisualObjectInstanceEnumerationObject {
+    //to return objects to populate the property pane (formatting options) where you can modify them as needed
+    public enumerateObjectInstances(options: EnumerateVisualObjectInstancesOptions): 
+            VisualObjectInstance[] | VisualObjectInstanceEnumerationObject 
+    {
         return VisualSettings.enumerateObjectInstances(this.settings || VisualSettings.getDefault(), options);
     }
 }
