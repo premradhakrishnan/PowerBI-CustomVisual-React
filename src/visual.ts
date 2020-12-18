@@ -44,6 +44,13 @@ import VisualObjectInstanceEnumerationObject = powerbi.VisualObjectInstanceEnume
 //Data Model
 import DataView = powerbi.DataView;
 
+//add below 3 lines
+import * as React from "react";
+import * as ReactDOM from "react-dom";
+import HelloReact from "./helloReact";
+
+import DataViewCategorical = powerbi.DataViewCategorical;
+
 //All visuals start with a class that implements the IVisual interface. 
 //You can name the class anything as long as there's exactly one class that implements the IVisual interface.
 //The visual class name must match what's defined in the pbiviz.json file.
@@ -53,12 +60,18 @@ export class Visual implements IVisual {
     private settings: VisualSettings;
     private textNode: Text;
 
+    private reactRoot: React.ComponentElement<any, any>;
+
     //a standard constructor to initialize the visual's state
     constructor(options: VisualConstructorOptions) {
         console.log('Visual constructor', options);
 
         this.target = options.element;
         this.updateCount = 0;
+
+        // #2 - add below 2 lines in constructor
+        this.reactRoot = React.createElement(HelloReact, {});
+        ReactDOM.render(this.reactRoot, this.target);
         
         if (document) {
             const new_p: HTMLElement = document.createElement("p");
@@ -68,11 +81,24 @@ export class Visual implements IVisual {
             new_em.appendChild(this.textNode);
             new_p.appendChild(new_em);
             this.target.appendChild(new_p);
+
+            const h1: HTMLElement = document.createElement("h1");
+            h1.appendChild(document.createTextNode("Hello World..."));
+            this.target.appendChild(h1);
         }
     }
 
     //to update the visual's data
     public update(options: VisualUpdateOptions) {
+
+        const dataView: DataView = options.dataViews[0];
+
+            const categoricalDataView: DataViewCategorical = dataView.categorical;
+            
+            HelloReact.update({
+                labels: categoricalDataView.categories[0].values.toString().split(","),
+                labelValues: categoricalDataView.values[0].values.toString().split(",")
+            });
         
         this.settings = Visual.parseSettings(options && options.dataViews && options.dataViews[0]);
         console.log('Visual update', options);
